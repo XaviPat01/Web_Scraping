@@ -24,11 +24,8 @@ url = "https://moodle.iitd.ac.in/login/index.php"
 driver = webdriver.Chrome()
 driver.get(url)
 
-
-
 user=input("Enter your user id: ")
 pswd = input("Enter your password: ")
-
 
 search1 = driver.find_element_by_id("username")
 search1.send_keys(user)
