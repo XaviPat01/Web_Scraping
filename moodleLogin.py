@@ -1,10 +1,7 @@
 from selenium import webdriver
 import time
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait, Select
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.common.exceptions import TimeoutException
+
 
 def captcha(qn:str)->int:
     words = list(qn.split())
@@ -39,3 +36,6 @@ cfield.send_keys(captcha(cqn.text))
 
 btn = driver.find_element_by_xpath('//input[@id="loginbtn"]')
 btn.click()
+
+time.sleep(10)
+driver.quit()
