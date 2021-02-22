@@ -50,7 +50,7 @@ while not exitcond:
                 w, h = size['width'], size['height']
                 driver.set_window_size(w,h)
                 driver.execute_script("arguments[0].scrollIntoView();", qn)
-                time.sleep(0.5)
+                time.sleep(1)
                 qn.screenshot(f'{folder}/problem.png')
 
                 inputs=[inpt.text for inpt in driver.find_elements_by_xpath('//div[@class="input"]//pre')]
@@ -62,7 +62,15 @@ while not exitcond:
                 for i in range(len(outputs)):
                     with open(f'{folder}/output{i+1}.txt','w') as foutput:
                         foutput.write(outputs[i])
-
+            try:
+                a1=driver.find_element_by_xpath('//td[contains(@class,"id")]//a').text
+                driver.get(f'https://codeforces.com/problemset/page/{str(pgnum+1)}')
+                a2=driver.find_element_by_xpath('//td[contains(@class,"id")]//a').text
+                if (a1==a2):
+                    break
+            except:
+                print('Last page of problems')
+                break
             j+=1
 
     elif int(pset(driver.find_element_by_xpath('//td[contains(@class,"id")]//a').text))<int(cnum):
