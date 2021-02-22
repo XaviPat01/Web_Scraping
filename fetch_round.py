@@ -1,13 +1,19 @@
 from selenium import webdriver
-import time
-from selenium.webdriver.common.by import By
 import os
+#import time
+#from selenium.webdriver.common.by import By
+
 
 def pname(a:str)->str:
     if a[-1].isdigit():
         return a[-2:]
     else:
         return a[-1:]
+def pset(a:str)->str:
+    if a[-1].isdigit():
+        return a[:-2]
+    else:
+        return a[:-1]
 
 cnum = input("Enter the contest number: ")
 
@@ -16,13 +22,13 @@ driver = webdriver.Chrome()
 driver.get(url)
 found = False
 os.mkdir(f'{cnum}')
-
+pgnum=1
 while not found:
-    if driver.find_elements_by_xpath(f"//a[text()[contains(.,{cnum})]]"):
+    if driver.find_elements_by_xpath(f'//td[contains(@class,"id")]/a[text()[contains(.,{cnum})]]') and pset(driver.find_elements_by_xpath(f'//td[contains(@class,"id")]/a[text()[contains(.,{cnum})]]')[0].text)==cnum:
+        problemset=driver.find_elements_by_xpath(f'//td[contains(@class,"id")]/a[text()[contains(.,{cnum})]]')
         found= True
-        problemset = driver.find_elements_by_xpath(f"//a[text()[contains(.,{cnum})]]")
         namelist=[problem.text for problem in problemset]
-        print(namelist)
+        #print(namelist)
         plong=len(namelist)
         for i in range(0,plong):
             qname=pname(namelist[i])
@@ -44,9 +50,9 @@ while not found:
             #driver.get(url)
 
     else:
-        driver.get(url)
-        pages= driver.find_elements_by_xpath("//a[@href[contains(.,'problemset/page')]]")
-        pages[1].click()
+        pgnum+=1
+        urlnext = f'https://codeforces.com/problemset/page/{str(pgnum)}'
+        driver.get(urlnext)
 
 #https://codeforces.com/problemset 
 # find_elements xpath= //a[text()[contains(.,cnum)]]
