@@ -44,7 +44,6 @@ while not exitcond:
                 driver.maximize_window()
                 qn = driver.find_element_by_xpath('//div[@class="problem-statement"]')
                 driver.execute_script("arguments[0].scrollIntoView();", qn)
-                driver.execute_script("document.body.style.zoom=40%")
                 time.sleep(0.5)
                 qn.screenshot(f'{folder}/problem.png')
 
