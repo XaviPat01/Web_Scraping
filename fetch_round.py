@@ -1,7 +1,7 @@
 from selenium import webdriver
 import os
 import ctypes
-#import time
+import time
 #from selenium.webdriver.common.by import By
 
 
@@ -43,23 +43,30 @@ while not exitcond:
                 driver.get(urlnew)
                 driver.maximize_window()
                 qn = driver.find_element_by_xpath('//div[@class="problem-statement"]')
+                driver.execute_script("arguments[0].scrollIntoView();", qn)
+                driver.execute_script("document.body.style.zoom=40%")
+                time.sleep(0.5)
                 qn.screenshot(f'{folder}/problem.png')
 
-                sampinput=driver.find_element_by_xpath('//div[@class="input"]').find_element_by_tag_name('pre').text
-                with open(f'{folder}/input.txt','w') as finput:
-                    finput.write(sampinput)
+                inputs=[inpt.text for inpt in driver.find_elements_by_xpath('//div[@class="input"]//pre')]
+                for i in range(len(inputs)):
+                    with open(f'{folder}/input{i+1}.txt','w') as finput:
+                        finput.write(inputs[i])
 
-                sampoutput=driver.find_element_by_xpath('//div[@class="output"]').find_element_by_tag_name('pre').text
-                with open(f'{folder}/output.txt','w') as foutput:
-                    foutput.write(sampoutput)
-                #driver.get(url)
+                outputs=[otpt.text for otpt in driver.find_elements_by_xpath('//div[@class="output"]//pre')]
+                for i in range(len(outputs)):
+                    with open(f'{folder}/output{i+1}.txt','w') as foutput:
+                        foutput.write(outputs[i])
+
             j+=1
+
     elif int(pset(driver.find_element_by_xpath('//td[contains(@class,"id")]//a').text))<int(cnum):
         exitcond=True
         os.rmdir(f'{cnum}')
         driver.quit()
         print("The requested contest doesn't exist!")
         #Error Box -----> ctypes.windll.user32.MessageBoxW(0, "The requested contest doesn't exist!", "Incorrect Contest Number",16)
+    
     else:
         pgnum+=1
         urlnext = f'https://codeforces.com/problemset/page/{str(pgnum)}'
