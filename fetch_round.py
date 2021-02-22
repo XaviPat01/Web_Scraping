@@ -2,6 +2,7 @@ from selenium import webdriver
 import os
 import ctypes
 import time
+from selenium.webdriver.chrome.options import Options
 #from selenium.webdriver.common.by import By
 
 
@@ -20,7 +21,10 @@ def pset(a:str)->str:
 cnum = input("Enter the contest number: ")
 
 url = "https://codeforces.com/problemset"
-driver = webdriver.Chrome()
+
+options = Options()
+options.headless = True
+driver = webdriver.Chrome(options=options)
 driver.get(url)
 exitcond = False
 os.mkdir(f'{cnum}')
@@ -41,8 +45,10 @@ while not exitcond:
                 os.mkdir(folder)
                 urlnew = f'https://codeforces.com/problemset/problem/{cnum}/{qname}'
                 driver.get(urlnew)
-                driver.maximize_window()
                 qn = driver.find_element_by_xpath('//div[@class="problem-statement"]')
+                size = qn.size
+                w, h = size['width'], size['height']
+                driver.set_window_size(w,h)
                 driver.execute_script("arguments[0].scrollIntoView();", qn)
                 time.sleep(0.5)
                 qn.screenshot(f'{folder}/problem.png')
