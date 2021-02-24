@@ -29,6 +29,7 @@ driver.get(url)
 exitcond = False
 os.mkdir(f'{cnum}')
 pgnum=1
+
 while not exitcond:
     if driver.find_elements_by_xpath(f'//td[contains(@class,"id")]/a[text()[contains(.,{cnum})]]') and pset(driver.find_elements_by_xpath(f'//td[contains(@class,"id")]/a[text()[contains(.,{cnum})]]')[0].text)==cnum:
         j=0
@@ -43,6 +44,7 @@ while not exitcond:
                 qname=pname(namelist[i])
                 folder=f'{cnum}/{qname}'
                 os.mkdir(folder)
+                time.sleep(0.5)
                 urlnew = f'https://codeforces.com/problemset/problem/{cnum}/{qname}'
                 driver.get(urlnew)
                 qn = driver.find_element_by_xpath('//div[@class="problem-statement"]')
@@ -50,7 +52,6 @@ while not exitcond:
                 w, h = size['width'], size['height']
                 driver.set_window_size(w,h)
                 driver.execute_script("arguments[0].scrollIntoView();", qn)
-                time.sleep(1)
                 qn.screenshot(f'{folder}/problem.png')
 
                 inputs=[inpt.text for inpt in driver.find_elements_by_xpath('//div[@class="input"]//pre')]
@@ -69,7 +70,6 @@ while not exitcond:
                 if (a1==a2):
                     break
             except:
-                print('Last page of problems')
                 break
             j+=1
 
@@ -82,6 +82,7 @@ while not exitcond:
     
     else:
         pgnum+=1
+        time.sleep(0.5)
         urlnext = f'https://codeforces.com/problemset/page/{str(pgnum)}'
         driver.get(urlnext)
 
