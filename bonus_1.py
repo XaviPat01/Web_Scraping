@@ -43,7 +43,7 @@ if num>100:
                 qn = driver.find_element_by_xpath('//div[@class="problem-statement"]')
                 size = qn.size
                 w, h = size['width'], size['height']
-                driver.set_window_size(w,h)
+                driver.set_window_size(w+25,h+100)
                 driver.execute_script("arguments[0].scrollIntoView();", qn)
                 #time.sleep(0.5)
                 qn.screenshot(f'{folder}/problem.png')
