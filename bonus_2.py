@@ -18,7 +18,7 @@ def pset(a:str)->str:
         return a[:-1]
 
 def probonpg(pagenum:int):
-    urlnew=f"https://codeforces.com/problemset/page/{pagenum}?order=BY_RATING_DESC&tags={mindiff}-{maxdiff}"
+    urlnew=f"https://codeforces.com/problemset/page/{pagenum}?tags={mindiff}-{maxdiff}&order=BY_RATING_DESC"
     driver.get(urlnew)
     problist=driver.find_elements_by_xpath("//td[contains(@class,\"id\")]/a")
     probname=[prob.text for prob in problist]
@@ -55,7 +55,7 @@ mindiff = int(input("Enter the minimum difficulty level:"))
 options=Options()
 options.headless=True
 driver = webdriver.Chrome(options=options)
-url=f"https://codeforces.com/problemset?order=BY_RATING_DESC&tags={mindiff}-{maxdiff}"
+url=f"https://codeforces.com/problemset?tags={mindiff}-{maxdiff}&order=BY_RATING_DESC"
 driver.get(url)
 
 #https://codeforces.com/problemset?order=BY_RATING_DESC&tags=
